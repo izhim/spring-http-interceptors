@@ -1,4 +1,4 @@
-# Spring Boot Interceptors Guide
+# Spring Boot Interceptors
 
 This guide explains how to use **interceptors** in Spring Boot to perform actions before or after a request is processed by a controller method. We will cover how to create custom interceptors, configure them, and use them to monitor request handling times, for example.
 
