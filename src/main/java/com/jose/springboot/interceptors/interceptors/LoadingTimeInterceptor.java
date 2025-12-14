@@ -1,5 +1,8 @@
 package com.jose.springboot.interceptors.interceptors;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.jspecify.annotations.Nullable;
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +33,18 @@ public class LoadingTimeInterceptor implements HandlerInterceptor{
         Random random = new Random();
         Thread.sleep(random.nextInt(500));
         logger.info("LoadingTimeInterceptor: preHandle() entrando en el método " + nombreMethod + "...");
-        return true;
+        
+        Map<String, String> resp = new HashMap<>();
+        resp.put("error", "No se ha podido cargar el " + nombreMethod);
+        resp.put("date", new Date().toString());
+        ObjectMapper mapper = new ObjectMapper();
+        String respString = mapper.writeValueAsString(resp);
+        response.setContentType("application/json");
+        response.setStatus(401);
+        response.getWriter().write(respString);
+        return false;
+
+        // return true;
     }
 
     @Override
